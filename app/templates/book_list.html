@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Список книг</h1>
+<ul>
+    {% for b in books %}
+    <li><a href="{{ url_for('book_edit', pk=b.pk) }}">{{ b }}</a></li>
+    {% endfor %}
+</ul>
+<a href="{{ url_for('book_edit') }}">Создать книгу</a>
+{% endblock %}
