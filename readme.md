@@ -304,6 +304,19 @@ app.add_url_rule("/book_delete/<int:pk>/", view_func=views.book_delete, methods=
 {% endblock %}
 ```
 
+Исправьте в шаблоне `book_list.html` список с книгами:
+
+```html
+<li>
+    <a href="{{ url_for('book_edit', pk=b.pk) }}">
+    {{ b }}
+    </a>
+    <a href="{{ url_for('book_delete', pk=b.pk) }}">
+        <i class="bi bi-trash-fill"></i>
+    </a>
+</li>
+```
+
 2. Исправьте в `views.py` функцию:
 
 ```python
