@@ -261,17 +261,27 @@ def book_delete(pk):
     return render_template("book_delete.html", book=book)
 ```
 
-3. Добавьте в шаблон `book_list.html` ссылку в :
+3. Исправьте в шаблоне `book_list.html` список с книгами:
 
 ```html
-<a href="{{ url_for('book_list') }}">Список книг</a>
+<li>
+    {{ b }}
+    <a href="{{ url_for('book_delete', pk=b.pk) }}">
+        <i class="bi bi-trash-fill"></i>
+    </a>
+</li>
 ```
 
-Зарегистрируйте функции в `create_app()`:
+Зарегистрируйте функцию в `create_app()`:
 
 ```python
 app.add_url_rule("/book_delete/<int:pk>/", view_func=views.book_delete, methods=["GET", "POST"])
 ```
+
+4. Проверьте в браузере удаление книг
+
+5. Сделайте коммит
+
 
 ## Ссылки
 
