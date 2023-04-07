@@ -222,7 +222,7 @@ def book_edit():
 
 ```python
 app.add_url_rule("/book_list/", view_func=views.book_list)
-app.add_url_rule("/book_edit/<int:pk>/", view_func=views.book_edit, methods=["GET", "POST"])
+app.add_url_rule("/book_new/", view_func=views.book_edit, methods=["GET", "POST"])
 ```
 
 4. Проверьте в браузере добавление и просмотр данных
@@ -282,6 +282,52 @@ app.add_url_rule("/book_delete/<int:pk>/", view_func=views.book_delete, methods=
 
 5. Сделайте коммит
 
+## Редактирование данных
+
+1. Исправьте шаблон `book_edit.html`:
+
+```html
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{% if book.pk %}Описание{% else %}Создание{% endif %} книги</h1>
+<form method="post">
+    <div class="mb-3">
+        <input type="hidden" name="pk" value="{{ book.pk }}">
+        <label for="name" class="form-label">Название</label>
+        <input type="text" name="name" id="name" value="{% if book.name %}{{ book.name }}{% endif %}" class="form-control">
+    </div>
+    <input type="submit" value="Сохранить" class="btn btn-primary mb-3">
+    <a href="{{ url_for('book_list') }}" class="btn btn-secondary mb-3">Отменить</a>
+</form>
+{% endblock %}
+```
+
+2. Исправьте в `views.py` функцию:
+
+```python
+def book_edit(pk=None):
+    book = db.get_or_404(Book, pk) if pk else Book()
+    if request.method == 'POST':
+        book.name = request.form["name"]
+        if pk:
+            book.verified = True
+        else:
+            db.session.add(book)
+        db.session.commit()
+        return redirect(url_for("book_list"))
+    return render_template("book_edit.html", book=book)
+```
+
+3. Зарегистрируйте функцию в `create_app()`:
+
+```python
+app.add_url_rule("/book_edit/<int:pk>/", view_func=views.book_edit, methods=["GET", "POST"])
+```
+
+4. Проверьте в браузере редактирование книг
+
+5. Сделайте коммит
 
 ## Ссылки
 
