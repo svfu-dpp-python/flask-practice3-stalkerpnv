@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{% if book.pk %}Описание{% else %}Создание{% endif %} книги</h1>
+<form method="post">
+    <div class="mb-3">
+        <input type="hidden" name="pk" value="{{ book.pk }}">
+        <label for="name" class="form-label">Название</label>
+        <input type="text" name="name" id="name" value="{% if book.name %}{{ book.name }}{% endif %}" class="form-control">
+    </div>
+    <input type="submit" value="Сохранить" class="btn btn-primary mb-3">
+    <a href="{{ url_for('book_list') }}" class="btn btn-secondary mb-3">Отменить</a>
+</form>
+{% endblock %}
